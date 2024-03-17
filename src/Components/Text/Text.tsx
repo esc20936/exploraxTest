@@ -4,7 +4,9 @@ import StyledTextProps from "src/Types/TextPropTypes";
 const StyledText = styled.Text`
   color: ${(props: StyledTextProps) => props.color || "#fff"};
   font-size: ${(props: StyledTextProps) =>
-    props.variant === "title" ? "35px" : "20px"};
+    props.variant === "title" ? "35px" : 
+    props.size || "16px"
+  };
   font-weight: ${(props: StyledTextProps) => {
     if (props.variant === "title") return "bold";
     return props.weight || "normal";
@@ -14,6 +16,7 @@ const StyledText = styled.Text`
 `;
 
 export default function Text({ variant = "p", children,...props }: StyledTextProps) {
+  
   return <StyledText variant={variant}
     {...props}
   >{children}</StyledText>;

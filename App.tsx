@@ -1,29 +1,28 @@
 import React, { useState, useEffect } from "react";
-import { SafeAreaView, View, StyleSheet, ImageBackground } from "react-native";
-import Header from "./src/Components/Header/Header";
-import Desafiate from "src/Views/Desafiate/Desafiate";
-export default function App() {
+import Layout from "src/Views/Layout/Layout";
+import DesafiatePage from "src/Views/Desafiate/Page";
+import QuestionsPage from "src/Views/Questions/Page";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import ScoreViewPage from "src/Views/ScoreView/Page";
+
+const Stack = createNativeStackNavigator();
+
+function App() {
   return (
-    <View style={styles.container}>
-      <ImageBackground
-        source={require("./src/assets/background/Fondo_RutaIterg_720x1600px_ExploraxV2-0.png")}
-        style={styles.container}
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName="Inicio"
+        screenOptions={{
+          headerShown: false,
+        }}
       >
-        <SafeAreaView style={styles.container}>
-          <Header />
-          <Desafiate />
-        </SafeAreaView>
-      </ImageBackground>
-    </View>
+        <Stack.Screen name="Inicio" component={DesafiatePage} />
+        <Stack.Screen name="Preguntas" component={QuestionsPage} />
+        <Stack.Screen name="Score" component={ScoreViewPage} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: "column",
-    justifyContent: "flex-start",
-    alignContent: "flex-start",
-    padding: 0,
-  },
-});
+export default App;

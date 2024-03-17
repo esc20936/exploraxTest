@@ -3,9 +3,15 @@ import { StyleSheet, View, Image } from "react-native";
 import Text from "src/Components/Text/Text";
 import Button from "src/Components/Button/Button";
 import LottieView from "lottie-react-native";
-import Footer from "src/Components/Footer/Footer";
-export default function Desafiate() {
+
+
+export default function Desafiate({navigation}) {
   const animation = useRef(null);
+
+
+  const handleAceptoElRetoButtonPress = () => {
+    navigation.navigate("Preguntas");
+  };
 
   return (
     <View style={styles.container}>
@@ -15,15 +21,13 @@ export default function Desafiate() {
         style={styles.animationContainer}
         source={require("src/assets/JSONAnimations/DIntro/DconFuego.json")}
       />
-      <View style={styles.blueContainer}>
-        
-      </View>
 
+      <View style={styles.blueContainer}/>
       <View style={styles.blueContainerFront}>
         <View style={styles.titleContainer}>
           <Text variant="title">¡Desafíate!</Text>
           <Image
-            source={require("../../assets/TitleLine/titleLine.png")}
+            source={require("src/assets/TitleLine/titleLine.png")}
             style={{ width: "100%", height: 1 }}
           />
         </View>
@@ -31,13 +35,14 @@ export default function Desafiate() {
           Supera estos desafíos y empieza a completar las misiones del
         </Text>
         <Text weight="bold">planeta Aritmética</Text>
-        <Button color="#fff" padding="4px 10px">
+        <Button
+        onPress={handleAceptoElRetoButtonPress}
+        color="#fff" padding="4px 10px">
           <Text color="#000" textTransform="uppercase">
             ¡Acepto el reto!
           </Text>
         </Button>
-        </View>
-      <Footer />
+      </View>
     </View>
   );
 }
@@ -50,9 +55,8 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    padding:0
+    padding: 0,
   },
-
   blueContainer: {
     position: "absolute",
     width: "80%",
@@ -60,14 +64,13 @@ const styles = StyleSheet.create({
     height: "40%",
     minHeight: 200,
     maxHeight: 300,
-    backgroundColor: "#204D8D",
     borderRadius: 20,
     flexDirection: "column",
     justifyContent: "flex-start",
-    alignItems: "center",
-    padding: 20,
-    gap: 20,
-    zIndex: -1,
+    backgroundColor: "#204D8D",
+    borderBottomWidth: 8,
+    borderBottomColor: "#123051",
+
   },
   blueContainerFront: {
     width: "80%",
@@ -81,12 +84,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 20,
     gap: 20,
-    zIndex: 1,
-  },
-  title: {
-    color: "#fff",
-    fontSize: 35,
-    fontWeight: "bold",
+
   },
   titleContainer: {
     flexDirection: "column",
@@ -96,8 +94,9 @@ const styles = StyleSheet.create({
   animationContainer: {
     position: "absolute",
     top: "5%",
-    left: "-10%",
+    left: "-15%",
     width: "100%",
     height: "100%",
   },
+
 });
