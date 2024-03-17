@@ -17,6 +17,7 @@
     "@react-native-community/masked-view": "^0.1.11",
     "@react-navigation/native": "^6.1.16",
     "@react-navigation/native-stack": "^6.9.25",
+    "@reduxjs/toolkit": "^2.2.1",
     "@types/react": "~18.2.45",
     "expo": "~50.0.13",
     "expo-status-bar": "~1.11.1",
@@ -31,6 +32,7 @@
     "react-native-screens": "~3.29.0",
     "react-native-web": "~0.19.6",
     "react-navigation": "^5.0.0",
+    "react-redux": "^9.1.0",
     "typescript": "^5.3.0"
   },
   "devDependencies": {
