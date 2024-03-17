@@ -79,17 +79,6 @@ export default function Questions({ navigation }) {
         questionType={questions[activeIndexQuestion].questionType}
       />
 
-      <View style={styles.bottomButtonContainer}>
-        <Button
-          onPress={handleAceptoElRetoButtonPress}
-          color="#fff"
-          padding="4px 10px"
-        >
-          <Text color="#000" textTransform="uppercase">
-            HOME
-          </Text>
-        </Button>
-      </View>
     </View>
   );
 }
