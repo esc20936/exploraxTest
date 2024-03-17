@@ -1,47 +1,95 @@
-import React, { useRef } from "react";
-import { StyleSheet, View, Image } from "react-native";
+import React, { useRef, useEffect } from "react";
+import { StyleSheet, View, Animated, Easing } from "react-native";
 import Text from "src/Components/Text/Text";
 import Button from "src/Components/Button/Button";
-import LottieView from "lottie-react-native";
 import ProgressBar from "src/Components/ProgessBar/ProgressBar";
 import StarStat from "src/Components/StarStat/StarStat";
 import CoinStat from "src/Components/CoinStat/CoinStat";
-export default function ScoreView({ navigation }) {
-  const animation = useRef(null);
 
+export default function ScoreView({ navigation }) {
+  const coinRefs = Array.from({ length: 5 }, () => useRef(null));
+  const transitions = Array.from({ length: 5 }, () => new Animated.Value(0));
+
+  const transitionStyles:any = transitions.map((transition) => ({
+    transform: [
+      {
+        translateX: transition.interpolate({
+          inputRange: [0, 1],
+          outputRange: [0, 120],
+        }),
+      },
+      {
+        translateY: transition.interpolate({
+          inputRange: [0, 1],
+          outputRange: [0, -380],
+        }),
+      },
+      {
+        scale: transition.interpolate({
+          inputRange: [0, 1],
+          outputRange: [1, 0.5],
+        }),
+      },
+      { perspective: 1000 },
+    ],
+  }));
+
+  useEffect(() => {
+    const animations = transitions.map((transition, index) =>
+      Animated.timing(transition, {
+        toValue: 1,
+        duration: 500,
+        delay: 1000 + index * 50,
+        useNativeDriver: true,
+        easing: Easing.linear,
+      })
+    );
+
+    const animation = Animated.parallel(animations);
+
+    animation.start(() => {
+      coinRefs.forEach((ref) => ref.current.setNativeProps({ style: { display: "none" } }));
+    });
+
+    return () => {
+      // animation.stop();
+    };
+  }, []);
 
   const handleFinish = () => {
     navigation.navigate("Inicio");
   };
+
   return (
     <View style={styles.container}>
       <ProgressBar index={10} limit={10} />
-
       <View style={styles.blueContainer}>
+
         <View style={styles.titleContainer}>
           <Text variant="title">¡Buen trabajo!</Text>
         </View>
-
         <View style={styles.statsContainer}>
           <StarStat amount={5} description="Preguntas" starColor="yellow" />
           <StarStat amount={5} description="Correctas" starColor="green" />
           <StarStat amount={5} description="Incorrectas" starColor="red" />
         </View>
-
-        <View style={styles.coinsContainer}>
-            <CoinStat amount={100} />
+        <View>
+          <CoinStat amount={100} />
+          {coinRefs.map((ref, index) => (
+            <Animated.Image
+              key={index}
+              ref={ref}
+              source={require("src/assets/Coin/moneda.png")}
+              style={[styles.coinAnimation, transitionStyles[index]]}
+            />
+          ))}
         </View>
-      <View style={styles.bottomButtonContainer}>
-        
-        <Button
-          onPress={handleFinish}
-          color="#fff"
-          padding="4px 10px"
-        >
-          <Text color="#000" textTransform="uppercase">
-            HOME
-          </Text>
-        </Button>
+        <View style={styles.bottomButtonContainer}>
+          <Button onPress={handleFinish} color="#fff" padding="4px 10px">
+            <Text color="#000" textTransform="uppercase">
+              HOME
+            </Text>
+          </Button>
         </View>
       </View>
     </View>
@@ -72,19 +120,11 @@ const styles = StyleSheet.create({
     borderBottomWidth: 8,
     borderBottomColor: "#123051",
   },
-
   titleContainer: {
     flexDirection: "column",
     width: "100%",
     alignItems: "center",
     marginTop: 20,
-  },
-  animationContainer: {
-    position: "absolute",
-    top: "5%",
-    left: "-15%",
-    width: "100%",
-    height: "100%",
   },
   statsContainer: {
     height: "30%",
@@ -94,5 +134,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 20,
   },
-  coinsContainer: {},
+  coinAnimation: {
+    width: 50,
+    height: 50,
+    position: "absolute",
+    left: "-5%",
+  },
 });
