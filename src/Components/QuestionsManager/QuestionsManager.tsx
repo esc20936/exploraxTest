@@ -95,8 +95,6 @@ export default function QuestionsManager({
       // console.log("Incorrecto");
       setShowNextButton(true);
       setSelectedOption(index);
-   
-
     }
   };
 
@@ -123,10 +121,22 @@ export default function QuestionsManager({
               height: 50,
               borderRadius: 10,
               padding: 10,
+          
+              position : "relative"
             }}
 
             disabled={showNextButton}
           >
+
+            {
+              showNextButton && index === answerIndex && (
+                <Image
+                  source={require("src/assets/Check/check.png")}
+                  style={{ width: 30, height: 30, objectFit: "contain", position: "absolute", top:"50%" , left: 5}}
+                />
+              )
+            }
+
             <Text
               color="#fff"
               textTransform="uppercase"
