@@ -15,6 +15,7 @@ export default function Desafiate({navigation}) {
 
   return (
     <View style={styles.container}>
+      <Text variant="title">¡Desafíate!</Text>
       <LottieView
         autoPlay
         ref={animation}
@@ -51,7 +52,7 @@ const styles = StyleSheet.create({
   container: {
     position: "relative",
     width: "100%",
-    flex: 1,
+    height: "100%",
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
@@ -70,9 +71,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#204D8D",
     borderBottomWidth: 8,
     borderBottomColor: "#123051",
+    zIndex: 4,
 
   },
   blueContainerFront: {
+    position: "absolute",
     width: "80%",
     maxWidth: 300,
     height: "40%",
@@ -84,7 +87,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 20,
     gap: 20,
-
+    zIndex: 8,
   },
   titleContainer: {
     flexDirection: "column",
@@ -97,6 +100,7 @@ const styles = StyleSheet.create({
     left: "-15%",
     width: "100%",
     height: "100%",
+    zIndex: 6,
   },
 
 });

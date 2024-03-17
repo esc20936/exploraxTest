@@ -174,6 +174,7 @@ const styles = StyleSheet.create({
     width: "100%",
     padding: 12,
     gap: 20,
+    // backgroundColor: "#fff",
   },
   question: {
     width: "100%",

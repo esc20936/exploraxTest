@@ -10,10 +10,11 @@ import Timer from "src/Components/Timer/Timer";
 
 export default function Questions({ navigation }) {
   const animation = useRef(null);
-  let factory = new MathQuestionFactory();
   const [activeIndexQuestion, setActiveIndexQuestion] = useState(0);
-
-  let questions = factory.generate10RandomQuestions();
+  const [correctAnswersCount, setCorrectAnswersCount] = useState(0);
+  const [questions, setQuestions] = useState(
+    new MathQuestionFactory().generate10RandomQuestions()
+  );
 
   const handleAceptoElRetoButtonPress = () => {
     navigation.navigate("Inicio");
@@ -25,6 +26,8 @@ export default function Questions({ navigation }) {
       animation.current.reset();
       animation.current.pause();
     });
+
+    setCorrectAnswersCount((count) => count + 1);
   };
 
   const handleNextQuestion = () => {
@@ -32,7 +35,15 @@ export default function Questions({ navigation }) {
       setActiveIndexQuestion(activeIndexQuestion + 1);
     } else if (activeIndexQuestion === 9) {
       // last question
-      navigation.navigate("Score");
+      let amountQuestions = questions.length;
+      let correctAnswers = correctAnswersCount;
+      let incorrectAnswers = amountQuestions - correctAnswers;
+
+      navigation.navigate("Score", {
+        amountQuestions: amountQuestions,
+        correctAnswers: correctAnswers,
+        incorrectAnswers: incorrectAnswers,
+      });
     } else {
       console.log("Error");
     }

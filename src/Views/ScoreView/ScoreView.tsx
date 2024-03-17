@@ -6,11 +6,19 @@ import ProgressBar from "src/Components/ProgessBar/ProgressBar";
 import StarStat from "src/Components/StarStat/StarStat";
 import CoinStat from "src/Components/CoinStat/CoinStat";
 
-export default function ScoreView({ navigation }) {
+
+
+export default function ScoreView({ route, navigation }) {
+
+
   const coinRefs = Array.from({ length: 5 }, () => useRef(null));
   const transitions = Array.from({ length: 5 }, () => new Animated.Value(0));
+  const { amountQuestions, correctAnswers, incorrectAnswers } = route.params;
 
-  const transitionStyles:any = transitions.map((transition) => ({
+  const amountCoins = correctAnswers * 20;
+
+
+  const transitionStyles: any = transitions.map((transition) => ({
     transform: [
       {
         translateX: transition.interpolate({
@@ -35,6 +43,9 @@ export default function ScoreView({ navigation }) {
   }));
 
   useEffect(() => {
+
+    
+
     const animations = transitions.map((transition, index) =>
       Animated.timing(transition, {
         toValue: 1,
@@ -48,7 +59,12 @@ export default function ScoreView({ navigation }) {
     const animation = Animated.parallel(animations);
 
     animation.start(() => {
-      coinRefs.forEach((ref) => ref.current.setNativeProps({ style: { display: "none" } }));
+      coinRefs.forEach((ref) =>
+        ref.current.setNativeProps({ style: { display: "none" } })
+      );
+      
+     
+
     });
 
     return () => {
@@ -64,17 +80,28 @@ export default function ScoreView({ navigation }) {
     <View style={styles.container}>
       <ProgressBar index={10} limit={10} />
       <View style={styles.blueContainer}>
-
         <View style={styles.titleContainer}>
           <Text variant="title">¡Buen trabajo!</Text>
         </View>
         <View style={styles.statsContainer}>
-          <StarStat amount={5} description="Preguntas" starColor="yellow" />
-          <StarStat amount={5} description="Correctas" starColor="green" />
-          <StarStat amount={5} description="Incorrectas" starColor="red" />
+          <StarStat
+            amount={amountQuestions}
+            description="Preguntas"
+            starColor="yellow"
+          />
+          <StarStat
+            amount={correctAnswers}
+            description="Correctas"
+            starColor="green"
+          />
+          <StarStat
+            amount={incorrectAnswers}
+            description="Incorrectas"
+            starColor="red"
+          />
         </View>
         <View>
-          <CoinStat amount={100} />
+          <CoinStat amount={amountCoins} />
           {coinRefs.map((ref, index) => (
             <Animated.Image
               key={index}

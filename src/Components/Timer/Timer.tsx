@@ -21,15 +21,13 @@ export default function Timer() {
     timerRef.current.pause();
     setIsActive(false);
 
-
   };
 
   const handleResetTimer = () => {
     setTime(20);
     setIsActive(true);
     setIsPaused(false);
-  
-  }
+  };
 
   useEffect(() => {
     let interval: any;
@@ -69,7 +67,7 @@ const styles = StyleSheet.create({
     width: 70,
     justifyContent: "center",
     alignItems: "center",
-    position:"absolute",
+    position: "absolute",
     left: "80%",
   },
   time: {
