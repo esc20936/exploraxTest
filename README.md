@@ -36,4 +36,6 @@ npm run start
 
 
 ## Usage <a name = "usage"></a>
+https://github.com/esc20936/exploraxTest/assets/77400177/65df2613-d3ec-4885-b37b-c1213d071f10
+
 
