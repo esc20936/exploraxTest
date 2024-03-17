@@ -5,6 +5,7 @@ import ProgressBar from "src/Components/ProgessBar/ProgressBar";
 import Button from "src/Components/Button/Button";
 import QuestionsManager from "src/Components/QuestionsManager/QuestionsManager";
 import MathQuestionFactory from "src/Utils/MathQuestionFactory";
+import LottieView from "lottie-react-native";
 
 export default function Questions({ navigation }) {
   const animation = useRef(null);
@@ -18,6 +19,13 @@ export default function Questions({ navigation }) {
   };
 
   const handleNextQuestion = () => {
+
+    animation.current.play();
+    animation.current.onAnimationFinish(()=>{
+      animation.current.reset();
+      animation.current.pause();
+    })
+
     if (activeIndexQuestion < 9) {
       setActiveIndexQuestion(activeIndexQuestion + 1);
       console.log(activeIndexQuestion);
@@ -33,6 +41,15 @@ export default function Questions({ navigation }) {
 
   return (
     <View style={styles.container}>
+
+      <LottieView
+        ref={animation}
+        style={styles.animationContainer}
+        source={require("src/assets/JSONAnimations/Estrellas/Estrellitas.json")}
+        autoPlay={false}
+        loop={false}
+      />
+
       <View style={styles.titleContainer}>
         <Text variant="title">Desafíate</Text>
         <Image
