@@ -12,6 +12,7 @@ export default function Chanin() {
           height: 300,
           bottom: "-10%",
           left: 0,
+          zIndex: 6,
         }}
       />
     </>

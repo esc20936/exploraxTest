@@ -498,6 +498,19 @@ class MathQuestionFactory {
       return option;
     });
 
+
+    // get answe
+    let correctAnswer = options[answerIndex];
+
+    // shuffle options
+    options = options.map(value => ({ value, sort: Math.random() }))
+    .sort((a, b) => a.sort - b.sort)
+    .map(({ value }) => value);
+
+    // update answer index
+    answerIndex = options.indexOf(correctAnswer);
+    
+
     return { question, options, answerIndex, questionType };
   }
 

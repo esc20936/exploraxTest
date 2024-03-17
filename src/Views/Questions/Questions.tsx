@@ -5,27 +5,45 @@ import ProgressBar from "src/Components/ProgessBar/ProgressBar";
 import Button from "src/Components/Button/Button";
 import QuestionsManager from "src/Components/QuestionsManager/QuestionsManager";
 import MathQuestionFactory from "src/Utils/MathQuestionFactory";
+import LottieView from "lottie-react-native";
+import Timer from "src/Components/Timer/Timer";
 
 export default function Questions({ navigation }) {
   const animation = useRef(null);
-  let factory = new MathQuestionFactory();
   const [activeIndexQuestion, setActiveIndexQuestion] = useState(0);
-
-  let questions = factory.generate10RandomQuestions();
+  const [correctAnswersCount, setCorrectAnswersCount] = useState(0);
+  const [questions, setQuestions] = useState(
+    new MathQuestionFactory().generate10RandomQuestions()
+  );
 
   const handleAceptoElRetoButtonPress = () => {
     navigation.navigate("Inicio");
   };
 
+  const handleCorrectAnswerSelected = () => {
+    animation.current.play();
+    animation.current.onAnimationFinish(() => {
+      animation.current.reset();
+      animation.current.pause();
+    });
+
+    setCorrectAnswersCount((count) => count + 1);
+  };
+
   const handleNextQuestion = () => {
     if (activeIndexQuestion < 9) {
       setActiveIndexQuestion(activeIndexQuestion + 1);
-      console.log(activeIndexQuestion);
     } else if (activeIndexQuestion === 9) {
       // last question
-      console.log("last question");
-      console.log("Finish");
-      navigation.navigate("Score");
+      let amountQuestions = questions.length;
+      let correctAnswers = correctAnswersCount;
+      let incorrectAnswers = amountQuestions - correctAnswers;
+
+      navigation.navigate("Score", {
+        amountQuestions: amountQuestions,
+        correctAnswers: correctAnswers,
+        incorrectAnswers: incorrectAnswers,
+      });
     } else {
       console.log("Error");
     }
@@ -33,16 +51,27 @@ export default function Questions({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.titleContainer}>
-        <Text variant="title">Desafíate</Text>
-        <Image
-          source={require("src/assets/TitleLine/titleLine.png")}
-          style={{ width: "100%", height: 1 }}
-        />
+      <LottieView
+        ref={animation}
+        style={styles.animationContainer}
+        source={require("src/assets/JSONAnimations/Estrellas/Estrellitas.json")}
+        autoPlay={false}
+        loop={false}
+      />
+      <View style={styles.titleAndTimerContainer}>
+        <View style={styles.titleContainer}>
+          <Text variant="title">Desafíate</Text>
+          <Image
+            source={require("src/assets/TitleLine/titleLine.png")}
+            style={{ width: "100%", height: 1 }}
+          />
+        </View>
+        <Timer />
       </View>
       <ProgressBar index={activeIndexQuestion + 1} limit={10} />
 
       <QuestionsManager
+        handleCorrectAnswer={handleCorrectAnswerSelected}
         handleNextQuestion={handleNextQuestion}
         question={questions[activeIndexQuestion].question}
         options={questions[activeIndexQuestion].options}
@@ -50,17 +79,6 @@ export default function Questions({ navigation }) {
         questionType={questions[activeIndexQuestion].questionType}
       />
 
-      <View style={styles.bottomButtonContainer}>
-        <Button
-          onPress={handleAceptoElRetoButtonPress}
-          color="#fff"
-          padding="4px 10px"
-        >
-          <Text color="#000" textTransform="uppercase">
-            HOME
-          </Text>
-        </Button>
-      </View>
     </View>
   );
 }
@@ -101,5 +119,12 @@ const styles = StyleSheet.create({
     left: "-10%",
     width: "100%",
     height: "100%",
+  },
+  titleAndTimerContainer: {
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 20,
   },
 });

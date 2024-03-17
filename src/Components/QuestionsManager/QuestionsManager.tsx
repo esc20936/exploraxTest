@@ -1,9 +1,11 @@
 import { View, StyleSheet, Image } from "react-native";
 import Text from "../Text/Text";
 import Button from "../Button/Button";
+import { useState } from "react";
 
 interface QuestionsManagerProps {
   handleNextQuestion: () => void;
+  handleCorrectAnswer?: () => void;
   question: string;
   options: string[];
   answerIndex: number;
@@ -12,11 +14,16 @@ interface QuestionsManagerProps {
 
 export default function QuestionsManager({
   handleNextQuestion,
+  handleCorrectAnswer,
   question,
   options,
   answerIndex,
   questionType,
 }: QuestionsManagerProps) {
+
+  const [selectedOption, setSelectedOption] = useState(-1);
+  const [showNextButton, setShowNextButton] = useState(false);
+
   const generateQuestionImage = () => {
     if (questionType === "classic") {
       return (
@@ -71,12 +78,23 @@ export default function QuestionsManager({
     );
   };
 
+  const handleNextQuestionButton = () => {
+    setSelectedOption(-1);
+    setShowNextButton(false);
+    handleNextQuestion();
+  };
+
   const handleOptionPress = (index: number) => {
     if (index === answerIndex) {
       // console.log("Correcto");
-      handleNextQuestion();
+      setShowNextButton(true);
+      setSelectedOption(index);
+      handleCorrectAnswer();
+      // handleNextQuestion();
     } else {
       // console.log("Incorrecto");
+      setShowNextButton(true);
+      setSelectedOption(index);
     }
   };
 
@@ -91,14 +109,34 @@ export default function QuestionsManager({
           <Button
             onPress={() => handleOptionPress(index)}
             key={index}
-            color="#6AB1B5"
+            color={
+              selectedOption === index
+                ? index === answerIndex
+                  ? "#6FBA3B"
+                  : "#E6333C"
+                : "#6AB1B5"
+            }
             style={{
               width: 150,
               height: 50,
               borderRadius: 10,
               padding: 10,
+          
+              position : "relative"
             }}
+
+            disabled={showNextButton}
           >
+
+            {
+              showNextButton && index === answerIndex && (
+                <Image
+                  source={require("src/assets/Check/check.png")}
+                  style={{ width: 30, height: 30, objectFit: "contain", position: "absolute", top:"50%" , left: 5}}
+                />
+              )
+            }
+
             <Text
               color="#fff"
               textTransform="uppercase"
@@ -120,6 +158,19 @@ export default function QuestionsManager({
           </Button>
         ))}
       </View>
+      <View style={styles.bottomButtonContainer}>
+        {showNextButton && (
+          <Button
+            onPress={handleNextQuestionButton}
+            color="#fff"
+            padding="4px 10px"
+          >
+            <Text color="#000" textTransform="uppercase">
+              Siguiente
+            </Text>
+          </Button>
+        )}
+        </View>
     </View>
   );
 }
@@ -133,6 +184,7 @@ const styles = StyleSheet.create({
     width: "100%",
     padding: 12,
     gap: 20,
+    // backgroundColor: "#fff",
   },
   question: {
     width: "100%",
@@ -159,5 +211,10 @@ const styles = StyleSheet.create({
     alignItems: "stretch",
     justifyContent: "center",
   },
+  bottomButtonContainer:{
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  }
 });
 
