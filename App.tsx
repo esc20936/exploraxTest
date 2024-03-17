@@ -5,11 +5,13 @@ import QuestionsPage from "src/Views/Questions/Page";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ScoreViewPage from "src/Views/ScoreView/Page";
-
+import { Provider } from "react-redux";
+import { store } from "src/store/store";
 const Stack = createNativeStackNavigator();
 
 function App() {
   return (
+    <Provider store={store}>
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName="Inicio"
@@ -22,6 +24,7 @@ function App() {
         <Stack.Screen name="Score" component={ScoreViewPage} />
       </Stack.Navigator>
     </NavigationContainer>
+    </Provider>
   );
 }
 

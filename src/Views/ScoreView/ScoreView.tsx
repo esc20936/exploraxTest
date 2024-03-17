@@ -5,11 +5,11 @@ import Button from "src/Components/Button/Button";
 import ProgressBar from "src/Components/ProgessBar/ProgressBar";
 import StarStat from "src/Components/StarStat/StarStat";
 import CoinStat from "src/Components/CoinStat/CoinStat";
-
-
+import { useDispatch } from "react-redux";
+import { setAmount } from "src/store/slices/moneySlice";
 
 export default function ScoreView({ route, navigation }) {
-
+  const dispatch = useDispatch();
 
   const coinRefs = Array.from({ length: 5 }, () => useRef(null));
   const transitions = Array.from({ length: 5 }, () => new Animated.Value(0));
@@ -63,7 +63,7 @@ export default function ScoreView({ route, navigation }) {
         ref.current.setNativeProps({ style: { display: "none" } })
       );
       
-     
+      dispatch(setAmount(amountCoins));
 
     });
 

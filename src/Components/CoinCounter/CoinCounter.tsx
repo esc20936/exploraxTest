@@ -1,6 +1,8 @@
 import { View,Image,StyleSheet,Text } from "react-native";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 export default function CoinCounter(){
-
+    const coins = useSelector((state:RootState) => state.coinCounter.value);
     
     return (
         <View style={styles.coinContainer}>
@@ -13,7 +15,9 @@ export default function CoinCounter(){
             >
                 <Text
                     style={styles.coinText}
-                >0000</Text>
+                >
+                    {coins.toString().padStart(4, '0')}
+                </Text>
             </View>
 
         </View>
