@@ -6,6 +6,7 @@ import Button from "src/Components/Button/Button";
 import QuestionsManager from "src/Components/QuestionsManager/QuestionsManager";
 import MathQuestionFactory from "src/Utils/MathQuestionFactory";
 import LottieView from "lottie-react-native";
+import Timer from "src/Components/Timer/Timer";
 
 export default function Questions({ navigation }) {
   const animation = useRef(null);
@@ -18,21 +19,19 @@ export default function Questions({ navigation }) {
     navigation.navigate("Inicio");
   };
 
-  const handleNextQuestion = () => {
-
+  const handleCorrectAnswerSelected = () => {
     animation.current.play();
-    animation.current.onAnimationFinish(()=>{
+    animation.current.onAnimationFinish(() => {
       animation.current.reset();
       animation.current.pause();
-    })
+    });
+  };
 
+  const handleNextQuestion = () => {
     if (activeIndexQuestion < 9) {
       setActiveIndexQuestion(activeIndexQuestion + 1);
-      console.log(activeIndexQuestion);
     } else if (activeIndexQuestion === 9) {
       // last question
-      console.log("last question");
-      console.log("Finish");
       navigation.navigate("Score");
     } else {
       console.log("Error");
@@ -41,7 +40,6 @@ export default function Questions({ navigation }) {
 
   return (
     <View style={styles.container}>
-
       <LottieView
         ref={animation}
         style={styles.animationContainer}
@@ -49,17 +47,20 @@ export default function Questions({ navigation }) {
         autoPlay={false}
         loop={false}
       />
-
-      <View style={styles.titleContainer}>
-        <Text variant="title">Desafíate</Text>
-        <Image
-          source={require("src/assets/TitleLine/titleLine.png")}
-          style={{ width: "100%", height: 1 }}
-        />
+      <View style={styles.titleAndTimerContainer}>
+        <View style={styles.titleContainer}>
+          <Text variant="title">Desafíate</Text>
+          <Image
+            source={require("src/assets/TitleLine/titleLine.png")}
+            style={{ width: "100%", height: 1 }}
+          />
+        </View>
+        <Timer />
       </View>
       <ProgressBar index={activeIndexQuestion + 1} limit={10} />
 
       <QuestionsManager
+        handleCorrectAnswer={handleCorrectAnswerSelected}
         handleNextQuestion={handleNextQuestion}
         question={questions[activeIndexQuestion].question}
         options={questions[activeIndexQuestion].options}
@@ -118,5 +119,12 @@ const styles = StyleSheet.create({
     left: "-10%",
     width: "100%",
     height: "100%",
+  },
+  titleAndTimerContainer: {
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 20,
   },
 });
