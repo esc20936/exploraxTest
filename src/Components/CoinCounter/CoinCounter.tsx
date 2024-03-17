@@ -1,5 +1,7 @@
 import { View,Image,StyleSheet,Text } from "react-native";
 export default function CoinCounter(){
+
+    
     return (
         <View style={styles.coinContainer}>
             <Image 

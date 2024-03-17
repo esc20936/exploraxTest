@@ -19,6 +19,7 @@ export default function PurpleLayers() {
                         height: 350-(index*50),
                         bottom: "-30%",
                         left: 0,
+                        zIndex: 5,
                     }}
                 />
             ))}

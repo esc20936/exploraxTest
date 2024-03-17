@@ -9,6 +9,7 @@ type StyledButtonProps = {
   borderRadius?: string;
   onPress?: () => void;
   style?: object;
+  disabled?: boolean;
 };
 
 export default StyledButtonProps;
